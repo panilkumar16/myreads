@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-//import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
   static propTypes = {
@@ -18,24 +17,11 @@ class SearchBooks extends React.Component {
   updateQuery = (query) => {
     this.setState({ query: query })
     console.log("Search Query = " + query)
-    //document.write("Finding query exists in searchterm or not" + this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()))
-    //console.log("Finding query exists in searchterm or not" + this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()))
     if (this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()) !== -1) {
       this.setState({ query: query })
       this.props.onUpdateSearchQuery(query)
     }
-      // if (!/query/i.test(this.props.searchTerms)) {
-      //   //this.setState({ query: query })
-      //   this.props.onUpdateSearchQuery(query)
-      // }
   }
-
-  // updateBook = (book, bookShelf) => {
-  //   console.log(bookShelf)
-  //   //let oldShelf = book.shelf
-  //   BooksAPI.update(book, bookShelf)
-  //   this.props.onUpdateBook(book, bookShelf)
-  // }
 
   render() {
     const { searchedBooks, onUpdateBook } = this.props
