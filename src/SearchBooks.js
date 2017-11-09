@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import * as BooksAPI from './BooksAPI'
+//import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
   static propTypes = {
@@ -30,12 +30,12 @@ class SearchBooks extends React.Component {
       // }
   }
 
-  updateBook = (book, bookShelf) => {
-    console.log(bookShelf)
-    //let oldShelf = book.shelf
-    BooksAPI.update(book, bookShelf)
-    this.props.onUpdateBook(book, bookShelf)
-  }
+  // updateBook = (book, bookShelf) => {
+  //   console.log(bookShelf)
+  //   //let oldShelf = book.shelf
+  //   BooksAPI.update(book, bookShelf)
+  //   this.props.onUpdateBook(book, bookShelf)
+  // }
 
   render() {
     const { searchedBooks, onUpdateBook } = this.props
@@ -65,7 +65,13 @@ class SearchBooks extends React.Component {
         </div>
         <div className="search-books-results">
           <div>
-            <span className="bookshelf-title">{this.props.searchTerms}</span>
+            <span className="bookshelf-title">
+              <b> Below search words are supported currently, so please use below search words:</b>
+              <br></br>
+              {this.props.searchTerms.map(searchTerm => searchTerm + ",  ")}
+              <br></br>
+              <br></br>
+            </span>
           </div>
           <ol className="books-grid">
             {searchedBooks.map((book) => (
@@ -74,7 +80,7 @@ class SearchBooks extends React.Component {
                   <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                     <div className="book-shelf-changer">
-                      <select value={book.shelf} onChange={(event) => this.updateBook(book, event.target.value)}>
+                      <select value={book.shelf} onChange={(event) => onUpdateBook(book, event.target.value)}>
                         <option value="none" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
