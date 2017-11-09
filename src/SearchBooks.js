@@ -1,9 +1,46 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-//import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
+import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
+  static propTypes = {
+    searchTerms: PropTypes.array.isRequired,
+    searchedBooks: PropTypes.array,
+    onUpdateSearchQuery: PropTypes.func.isRequired,
+    onUpdateBook: PropTypes.func.isRequired
+  }
+
+  state = {
+    query: ''
+  }
+
+  updateQuery = (query) => {
+    this.setState({ query: query })
+    console.log("Search Query = " + query)
+    //document.write("Finding query exists in searchterm or not" + this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()))
+    //console.log("Finding query exists in searchterm or not" + this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()))
+    if (this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()) !== -1) {
+      this.setState({ query: query })
+      this.props.onUpdateSearchQuery(query)
+    }
+      // if (!/query/i.test(this.props.searchTerms)) {
+      //   //this.setState({ query: query })
+      //   this.props.onUpdateSearchQuery(query)
+      // }
+  }
+
+  updateBook = (book, bookShelf) => {
+    console.log(bookShelf)
+    //let oldShelf = book.shelf
+    BooksAPI.update(book, bookShelf)
+    this.props.onUpdateBook(book, bookShelf)
+  }
+
   render() {
+    const { searchedBooks, onUpdateBook } = this.props
+    const { query } = this.state    
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -18,12 +55,40 @@ class SearchBooks extends React.Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
-
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              value={query}
+              onChange={(event) => this.updateQuery(event.target.value)}
+            />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <div>
+            <span className="bookshelf-title">{this.props.searchTerms}</span>
+          </div>
+          <ol className="books-grid">
+            {searchedBooks.map((book) => (
+              <li key={book.id}>
+                <div className="book">
+                  <div className="book-top">
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                    <div className="book-shelf-changer">
+                      <select value={book.shelf} onChange={(event) => this.updateBook(book, event.target.value)}>
+                        <option value="none" disabled>Move to...</option>
+                        <option value="currentlyReading">Currently Reading</option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
+                        <option value="none">None</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="book-title">{book.title}</div>
+                  <div className="book-authors">{book.authors}</div>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     )

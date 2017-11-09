@@ -1,16 +1,21 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
+//import PropTypes from 'prop-types'
 import ListShelves from './ListShelves'
 import SearchBooks from './SearchBooks'
 import './App.css'
 import * as BooksAPI from './BooksAPI'
 
 class BooksApp extends React.Component {
+  // static propTypes = {
+  //   searchTerms: ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
+  // }
 
   state = {
     currentlyReading: [],
     wantToRead: [],
-    read: []
+    read: [],
+    searchedBooks: []
   }
 
   componentDidMount() {
@@ -21,9 +26,14 @@ class BooksApp extends React.Component {
         read: books.filter(book => book.shelf === "read")
       })
     })
+    BooksAPI.search('Art', 20).then((books) => {
+      this.setState({
+        searchedBooks: books,
+      })
+    })
   }
 
-  updateShelfs = (book, bookShelf) => {
+  updateShelves = (book, bookShelf) => {
     console.log(bookShelf)
     //let oldShelf = book.shelf
     BooksAPI.update(book, bookShelf)
@@ -35,6 +45,33 @@ class BooksApp extends React.Component {
       })
     })
   }
+
+  updateSearchQuery = (query) => {
+    //this.setState({ query: query })
+    //console.log(query)
+    //let searchTerms = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
+    BooksAPI.search(query, 20).then((books) => {
+      this.setState ({
+        searchedBooks: books
+      })
+    })
+  }
+
+  // updateSearch = (query) => {
+  //   console.log(query)
+  //   BooksAPI.search(query, 20).then((books) => {
+  //     this.setState({
+  //       searchedBooks: books,
+  //     })
+  //   })
+  // }
+
+  // updateSearch = (query) => {
+  //   console.log(query)
+  //   this.setState({
+  //     query: query
+  //   })
+  // }
 
   render() {
     return (
@@ -49,17 +86,17 @@ class BooksApp extends React.Component {
                 <ListShelves
                   shelfTitle="Currently Reading"
                   shelfBooks={this.state.currentlyReading}
-                  onUpdateBook={this.updateShelfs}
+                  onUpdateBook={this.updateShelves}
                 />
                 <ListShelves
                   shelfTitle="Want to Read"
                   shelfBooks={this.state.wantToRead}
-                  onUpdateBook={this.updateShelfs}
+                  onUpdateBook={this.updateShelves}
                 />
                 <ListShelves
                   shelfTitle="Read"
                   shelfBooks={this.state.read}
-                  onUpdateBook={this.updateShelfs}
+                  onUpdateBook={this.updateShelves}
                 />
               </div>
             </div>
@@ -69,7 +106,12 @@ class BooksApp extends React.Component {
           </div>
         )}/>
         <Route path="/search" render={() => (
-          <SearchBooks/>
+          <SearchBooks
+            searchTerms={['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']}
+            searchedBooks={this.state.searchedBooks}
+            onUpdateSearchQuery={this.updateSearchQuery}
+            onUpdateBook={this.updateShelves}
+          />
         )}/>
       </div>
     )
