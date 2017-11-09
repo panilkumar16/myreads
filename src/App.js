@@ -1,15 +1,11 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
-//import PropTypes from 'prop-types'
 import ListShelves from './ListShelves'
 import SearchBooks from './SearchBooks'
 import './App.css'
 import * as BooksAPI from './BooksAPI'
 
 class BooksApp extends React.Component {
-  // static propTypes = {
-  //   searchTerms: ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
-  // }
 
   state = {
     currentlyReading: [],
@@ -47,31 +43,12 @@ class BooksApp extends React.Component {
   }
 
   updateSearchQuery = (query) => {
-    //this.setState({ query: query })
-    //console.log(query)
-    //let searchTerms = ['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']
     BooksAPI.search(query, 20).then((books) => {
       this.setState ({
         searchedBooks: books
       })
     })
   }
-
-  // updateSearch = (query) => {
-  //   console.log(query)
-  //   BooksAPI.search(query, 20).then((books) => {
-  //     this.setState({
-  //       searchedBooks: books,
-  //     })
-  //   })
-  // }
-
-  // updateSearch = (query) => {
-  //   console.log(query)
-  //   this.setState({
-  //     query: query
-  //   })
-  // }
 
   render() {
     return (
