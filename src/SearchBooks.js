@@ -6,6 +6,7 @@ import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
   static propTypes = {
+    yourBooks: PropTypes.array.isRequired,
     searchTerms: PropTypes.array.isRequired,
     onUpdateBook: PropTypes.func.isRequired
   }
