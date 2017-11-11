@@ -2,31 +2,48 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Book from './Book'
+import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
   static propTypes = {
     searchTerms: PropTypes.array.isRequired,
-    searchedBooks: PropTypes.array,
-    onUpdateSearchQuery: PropTypes.func.isRequired,
     onUpdateBook: PropTypes.func.isRequired
   }
 
   state = {
-    query: ''
+    query: '',
+    searchedBooks: []
+  }
+
+  componentDidMount() {
+    BooksAPI.search('Art', 20).then((books) => {
+      this.setState({
+        searchedBooks: books,
+      })
+    })
+  }
+
+  updateSearchQuery = (query) => {
+    BooksAPI.search(query, 20).then((books) => {
+      this.setState ({
+        searchedBooks: books
+      })
+    })
   }
 
   updateQuery = (query) => {
     this.setState({ query: query })
     console.log("Search Query = " + query)
-    if (this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()) !== -1) {
-      this.setState({ query: query })
-      this.props.onUpdateSearchQuery(query)
-    }
+    this.updateSearchQuery(query)
+    // if (this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()) !== -1) {
+    //   this.setState({ query: query })
+    //   this.props.onUpdateSearchQuery(query)
+    // }
   }
 
   render() {
-    const { searchedBooks, onUpdateBook } = this.props
-    const { query } = this.state    
+    const { onUpdateBook } = this.props
+    const { query, searchedBooks } = this.state    
 
     return (
       <div className="search-books">
@@ -53,7 +70,7 @@ class SearchBooks extends React.Component {
         <div className="search-books-results">
           <div>
             <span className="bookshelf-title">
-              <b> Below search words are supported currently, so please use below search words:</b>
+              <b> Below search terms are supported currently:</b>
               <br></br>
               {this.props.searchTerms.map(searchTerm => searchTerm + ",  ")}
               <br></br>
