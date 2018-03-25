@@ -8,7 +8,6 @@ import * as BooksAPI from './BooksAPI'
 class BooksApp extends React.Component {
 
   state = {
-    allYourBooks: [],
     currentlyReading: [],
     wantToRead: [],
     read: []
@@ -17,7 +16,6 @@ class BooksApp extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({
-        allYourBooks: books,
         currentlyReading: books.filter(book => book.shelf === "currentlyReading"),
         wantToRead: books.filter(book => book.shelf === "wantToRead"),
         read: books.filter(book => book.shelf === "read")
@@ -26,12 +24,9 @@ class BooksApp extends React.Component {
   }
 
   updateShelves = (book, bookShelf) => {
-    //console.log(bookShelf)
-    //let oldShelf = book.shelf
     BooksAPI.update(book, bookShelf)
     BooksAPI.getAll().then((books) => {
       this.setState({
-        allYourBooks: books,
         currentlyReading: books.filter(book => book.shelf === "currentlyReading"),
         wantToRead: books.filter(book => book.shelf === "wantToRead"),
         read: books.filter(book => book.shelf === "read")
@@ -73,7 +68,6 @@ class BooksApp extends React.Component {
         )}/>
         <Route path="/search" render={() => (
           <SearchBooks
-            yourBooks={this.state.allYourBooks}
             searchTerms={['Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS']}
             onUpdateBook={this.updateShelves}
           />

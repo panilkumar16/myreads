@@ -6,7 +6,6 @@ import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
   static propTypes = {
-    yourBooks: PropTypes.array.isRequired,
     searchTerms: PropTypes.array.isRequired,
     onUpdateBook: PropTypes.func.isRequired
   }
@@ -79,7 +78,7 @@ class SearchBooks extends React.Component {
             </span>
           </div>
           <ol className="books-grid">
-            {searchedBooks.map((book) => (
+            {searchedBooks.map(book => (
               <Book
                 key={book.id}
                 book={book}
