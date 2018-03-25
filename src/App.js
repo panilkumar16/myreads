@@ -26,7 +26,7 @@ class BooksApp extends React.Component {
   }
 
   updateShelves = (book, bookShelf) => {
-    console.log(bookShelf)
+    //console.log(bookShelf)
     //let oldShelf = book.shelf
     BooksAPI.update(book, bookShelf)
     BooksAPI.getAll().then((books) => {
