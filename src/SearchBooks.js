@@ -16,15 +16,18 @@ class SearchBooks extends React.Component {
   }
 
   componentDidMount() {
-    BooksAPI.search('Art', 20).then((books) => {
+    BooksAPI.search('A', 20).then((books) => {
       this.setState({
         searchedBooks: books,
       })
     })
   }
 
-  updateSearchQuery = (query) => {
+  updateSearch = (query) => {
     BooksAPI.search(query, 20).then((books) => {
+      if (books.error) {
+        books = []
+      }
       this.setState ({
         searchedBooks: books
       })
@@ -32,13 +35,11 @@ class SearchBooks extends React.Component {
   }
 
   updateQuery = (query) => {
-    this.setState({ query: query })
-    console.log("Search Query = " + query)
-    this.updateSearchQuery(query)
-    // if (this.props.searchTerms.findIndex(searchTerm => query.toLowerCase() === searchTerm.toLowerCase()) !== -1) {
-    //   this.setState({ query: query })
-    //   this.props.onUpdateSearchQuery(query)
-    // }
+    this.setState({ query: query.trim() })
+    if (query === '') {
+      query = 'A'
+    }
+    this.updateSearch(query)
   }
 
   render() {
@@ -78,13 +79,16 @@ class SearchBooks extends React.Component {
             </span>
           </div>
           <ol className="books-grid">
-            {searchedBooks.map(book => (
-              <Book
-                key={book.id}
-                book={book}
-                updateBook={onUpdateBook}
-              />
-            ))}
+            {(searchedBooks.length === 0) ?
+              <b> No books found! </b> : 
+              searchedBooks.map(book => (
+                <Book
+                  key={book.id}
+                  book={book}
+                  updateBook={onUpdateBook}
+                />
+              ))
+            }
           </ol>
         </div>
       </div>
