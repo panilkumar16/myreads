@@ -6,6 +6,7 @@ import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends React.Component {
   static propTypes = {
+    shelfBooks: PropTypes.array.isRequired,
     searchTerms: PropTypes.array.isRequired,
     onUpdateBook: PropTypes.func.isRequired
   }
@@ -17,6 +18,8 @@ class SearchBooks extends React.Component {
 
   componentDidMount() {
     BooksAPI.search('A', 20).then((books) => {
+      books.map(book => book.shelf = "none")
+      books.map(book => (this.props.shelfBooks.filter((shelfBook) => shelfBook.id === book.id).map(shelfBook => book.shelf = shelfBook.shelf)))
       this.setState({
         searchedBooks: books,
       })
@@ -28,6 +31,8 @@ class SearchBooks extends React.Component {
       if (books.error) {
         books = []
       }
+      books.map(book => book.shelf = "none")
+      books.map(book => (this.props.shelfBooks.filter((shelfBook) => shelfBook.id === book.id).map(shelfBook => book.shelf = shelfBook.shelf)))
       this.setState ({
         searchedBooks: books
       })
